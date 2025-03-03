@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniFi Gateway Decision Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>UniFi Gateway Decision Tool</h1>
+
+        <section id="decision-tree">
+            <h2>Find Your Gateway</h2>
+            <div class="question" id="q1">
+                <p>Do you want cloud connectivity for remote management?</p>
+                <button onclick="showOptions('cloud')">Yes</button>
+                <button onclick="showOptions('local')">No</button>
+            </div>
+            <!-- Cloud Branch -->
+            <div class="options" id="cloud" style="display: none;">
+                <p>Built-in Controller?</p>
+                <button onclick="showOptions('cloud-builtin')">Yes</button>
+                <button onclick="showOptions('cloud-external')">No</button>
+            </div>
+            <div class="options" id="cloud-builtin" style="display: none;">
+                <p>Performance?</p>
+                <button onclick="showResult('cloud-builtin-low')">Low (1 Gbps)</button>
+                <button onclick="showResult('cloud-builtin-med')">Medium (2.5–10 Gbps)</button>
+                <button onclick="showResult('cloud-builtin-high')">High (25 Gbps+)</button>
+            </div>
+            <div class="result" id="cloud-builtin-low" style="display: none;">
+                <p><strong>Result:</strong> UDM, UDR, UCG-Ultra (Cloud via unifi.ui.com)</p>
+            </div>
+            <div class="result" id="cloud-builtin-med" style="display: none;">
+                <p><strong>Result:</strong> UDM Pro, UDM SE, UDR7, UX7, UCG-Max (Cloud via unifi.ui.com)</p>
+            </div>
+            <div class="result" id="cloud-builtin-high" style="display: none;">
+                <p><strong>Result:</strong> EFG (Cloud via unifi.ui.com)</p>
+            </div>
+            <div class="options" id="cloud-external" style="display: none;">
+                <p>Dedicated or Self-Hosted?</p>
+                <button onclick="showOptions('cloud-dedicated')">Dedicated</button>
+                <button onclick="showOptions('cloud-self')">Self-Hosted</button>
+            </div>
+            <div class="options" id="cloud-dedicated" style="display: none;">
+                <p>Performance?</p>
+                <button onclick="showResult('cloud-dedicated-low')">Low (1 Gbps)</button>
+                <button onclick="showResult('cloud-dedicated-med')">Medium (2.5–10 Gbps)</button>
+            </div>
+            <div class="result" id="cloud-dedicated-low" style="display: none;">
+                <p><strong>Result:</strong> USG, UXG-Lite (Cloud Key, UI acct)</p>
+            </div>
+            <div class="result" id="cloud-dedicated-med" style="display: none;">
+                <p><strong>Result:</strong> UXG-Pro, UXG-Max (Cloud Key, UI acct)</p>
+            </div>
+            <div class="options" id="cloud-self" style="display: none;">
+                <p>Performance?</p>
+                <button onclick="showResult('cloud-self-low')">Low (1 Gbps)</button>
+                <button onclick="showResult('cloud-self-med')">Medium (2.5–10 Gbps)</button>
+            </div>
+            <div class="result" id="cloud-self-low" style="display: none;">
+                <p><strong>Result:</strong> USG, UXG-Lite (VPS/PC, UI/custom)</p>
+            </div>
+            <div class="result" id="cloud-self-med" style="display: none;">
+                <p><strong>Result:</strong> UXG-Pro, UXG-Max (VPS/PC, UI/custom)</p>
+            </div>
+            <!-- Local Branch -->
+            <div class="options" id="local" style="display: none;">
+                <p>Built-in Controller?</p>
+                <button onclick="showOptions('local-builtin')">Yes</button>
+                <button onclick="showOptions('local-external')">No</button>
+            </div>
+            <div class="options" id="local-builtin" style="display: none;">
+                <p>Performance?</p>
+                <button onclick="showResult('local-builtin-low')">Low (1 Gbps)</button>
+                <button onclick="showResult('local-builtin-med')">Medium (2.5–10 Gbps)</button>
+                <button onclick="showResult('local-builtin-high')">High (25 Gbps+)</button>
+            </div>
+            <div class="result" id="local-builtin-low" style="display: none;">
+                <p><strong>Result:</strong> UDM, UDR, UCG-Ultra (Local IP)</p>
+            </div>
+            <div class="result" id="local-builtin-med" style="display: none;">
+                <p><strong>Result:</strong> UDM Pro, UDM SE, UDR7, UX7, UCG-Max (Local IP)</p>
+            </div>
+            <div class="result" id="local-builtin-high" style="display: none;">
+                <p><strong>Result:</strong> EFG (Local IP)</p>
+            </div>
+            <div class="options" id="local-external" style="display: none;">
+                <p>Dedicated or Self-Hosted?</p>
+                <button onclick="showOptions('local-dedicated')">Dedicated</button>
+                <button onclick="showOptions('local-self')">Self-Hosted</button>
+            </div>
+            <div class="options" id="local-dedicated" style="display: none;">
+                <p>Performance?</p>
+                <button onclick="showResult('local-dedicated-low')">Low (1 Gbps)</button>
+                <button onclick="showResult('local-dedicated-med')">Medium (2.5–10 Gbps)</button>
+            </div>
+            <div class="result" id="local-dedicated-low" style="display: none;">
+                <p><strong>Result:</strong> USG, UXG-Lite (Cloud Key, Local IP)</p>
+            </div>
+            <div class="result" id="local-dedicated-med" style="display: none;">
+                <p><strong>Result:</strong> UXG-Pro, UXG-Max (Cloud Key, Local IP)</p>
+            </div>
+            <div class="options" id="local-self" style="display: none;">
+                <p>Performance?</p>
+                <button onclick="showResult('local-self-low')">Low (1 Gbps)</button>
+                <button onclick="showResult('local-self-med')">Medium (2.5–10 Gbps)</button>
+            </div>
+            <div class="result" id="local-self-low" style="display: none;">
+                <p><strong>Result:</strong> USG, UXG-Lite (VPS/PC, Local IP)</p>
+            </div>
+            <div class="result" id="local-self-med" style="display: none;">
+                <p><strong>Result:</strong> UXG-Pro, UXG-Max (VPS/PC, Local IP)</p>
+            </div>
+        </section>
+
+        <section id="equipment-table">
+            <h2>Gateway Details</h2>
+            <table id="gateway-table">
+                <thead>
+                    <tr>
+                        <th>Equipment</th>
+                        <th>Built-in Controller</th>
+                        <th>Dedicated Controller</th>
+                        <th>Self-Hosted Controller</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-connectivity="cloud local" data-controller="builtin" data-performance="low">
+                        <td>UDM</td>
+                        <td>Yes (Network only)<br>CC: unifi.ui.com<br>DC: Local IP</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="builtin" data-performance="med">
+                        <td>UDM Pro</td>
+                        <td>Yes (All apps)<br>CC: unifi.ui.com<br>DC: Local IP</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="builtin" data-performance="med">
+                        <td>UDM SE</td>
+                        <td>Yes (All apps)<br>CC: unifi.ui.com<br>DC: Local IP</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="builtin" data-performance="low">
+                        <td>UDR</td>
+                        <td>Yes (Net + 1 app)<br>CC: unifi.ui.com<br>DC: Local IP</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="builtin" data-performance="med">
+                        <td>UDW</td>
+                        <td>Yes (All apps)<br>CC: unifi.ui.com<br>DC: Local IP</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="builtin" data-performance="low">
+                        <td>UCG-Ultra</td>
+                        <td>Yes (Network only)<br>CC: unifi.ui.com<br>DC: Local IP</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="builtin" data-performance="med">
+                        <td>UCG-Max</td>
+                        <td>Yes (All apps)<br>CC: unifi.ui.com<br>DC: Local IP</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="builtin" data-performance="high">
+                        <td>EFG</td>
+                        <td>Yes (Network only)<br>CC: unifi.ui.com<br>DC: Local IP</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="builtin" data-performance="med">
+                        <td>UDR7</td>
+                        <td>Yes (All apps)<br>CC: unifi.ui.com<br>DC: Local IP</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="builtin" data-performance="med">
+                        <td>UX7</td>
+                        <td>Yes (All apps)<br>CC: unifi.ui.com<br>DC: Local IP</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="builtin" data-performance="med">
+                        <td>UCG-Fiber</td>
+                        <td>Yes (All apps)<br>CC: unifi.ui.com<br>DC: Local IP</td>
+                        <td>No</td>
+                        <td>No</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="dedicated self" data-performance="low">
+                        <td>USG</td>
+                        <td>No</td>
+                        <td>Yes (e.g., CK G2)<br>CC: UI acct<br>DC: Local IP</td>
+                        <td>Yes (VPS, PC)<br>CC: UI/custom<br>DC: Local IP</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="dedicated self" data-performance="low">
+                        <td>USG-Pro</td>
+                        <td>No</td>
+                        <td>Yes (e.g., CK G2)<br>CC: UI acct<br>DC: Local IP</td>
+                        <td>Yes (VPS, PC)<br>CC: UI/custom<br>DC: Local IP</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="dedicated self" data-performance="low">
+                        <td>UXG-Lite</td>
+                        <td>No</td>
+                        <td>Yes (e.g., CK G2)<br>CC: UI acct<br>DC: Local IP</td>
+                        <td>Yes (VPS, PC)<br>CC: UI/custom<br>DC: Local IP</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="dedicated self" data-performance="med">
+                        <td>UXG-Pro</td>
+                        <td>No</td>
+                        <td>Yes (e.g., CK G2)<br>CC: UI acct<br>DC: Local IP</td>
+                        <td>Yes (VPS, PC)<br>CC: UI/custom<br>DC: Local IP</td>
+                    </tr>
+                    <tr data-connectivity="cloud local" data-controller="dedicated self" data-performance="med">
+                        <td>UXG-Max</td>
+                        <td>No</td>
+                        <td>Yes (e.g., CK G2)<br>CC: UI acct<br>DC: Local IP</td>
+                        <td>Yes (VPS, PC)<br>CC: UI/custom<br>DC: Local IP</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
